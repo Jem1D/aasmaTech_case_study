@@ -93,19 +93,19 @@
       repositories.forEach((repo, index) => {
         const listItem = document.createElement('li');
         
-        // Add numbering
+        // Adding numbering
         const number = document.createElement('span');
         number.textContent = `${index + 1}. `;
         listItem.appendChild(number);
   
-        // Create a link to the repository
+        // Creating a link to the repository
         const repoLink = document.createElement('a');
         repoLink.href = repo.html_url;
         repoLink.textContent = repo.full_name;
         repoLink.target = '_blank'; // Open link in a new tab
         listItem.appendChild(repoLink);
   
-        // Add a short description
+        // Short description for each repository
         const description = document.createElement('p');
         description.textContent = repo.description || 'No description available.';
         listItem.appendChild(description);
