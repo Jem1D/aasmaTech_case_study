@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Repositories</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    label {
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    select {
+      padding: 8px;
+      font-size: 16px;
+    }
+
+    .options-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 20px;
+      background-color: #fff;
+      padding: 15px 15px 10px 15px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    p {
+      color: #666;
+      margin-top: 10px;
+      margin-left: 1rem;
+      font-size: 0.9rem;
+    }
+    span{
+        font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Top Rated GitHub Repositories</h1>
+
+  <div class="options-container">
+    <label for="perPage" style="margin-right: 10px;">Repositories per page:</label>
+    <select id="perPage" onchange="fetchRepositories()">
+      <option value="10">10</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
+  </div>
+
+  <ul id="repositoriesList"></ul>
+
+  <script>
+    async function fetchRepositories() {
+      const perPage = document.getElementById('perPage').value;
+      const response = await fetch(`/repositories?perPage=${perPage}`);
+      const repositories = await response.json();
+      
+      const repositoriesList = document.getElementById('repositoriesList');
+      repositoriesList.innerHTML = ''; // Clear previous list
+  
+      repositories.forEach((repo, index) => {
+        const listItem = document.createElement('li');
+        
+        // Add numbering
+        const number = document.createElement('span');
+        number.textContent = `${index + 1}. `;
+        listItem.appendChild(number);
+  
+        // Create a link to the repository
+        const repoLink = document.createElement('a');
+        repoLink.href = repo.html_url;
+        repoLink.textContent = repo.full_name;
+        repoLink.target = '_blank'; // Open link in a new tab
+        listItem.appendChild(repoLink);
+  
+        // Add a short description
+        const description = document.createElement('p');
+        description.textContent = repo.description || 'No description available.';
+        listItem.appendChild(description);
+  
+        repositoriesList.appendChild(listItem);
+      });
+    }
+  
+    // Fetch repositories on page load
+    fetchRepositories();
+  </script>
+  
+</body>
+</html>
